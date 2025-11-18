@@ -60,6 +60,7 @@ class PaymentReceivingDocument implements ModelInterface, ArrayAccess
         'payment_structure_type' => 'string',
         'document_id' => 'int',
         'payment_method' => 'int',
+        'other_channel_id' => 'int',
         'payment_date' => '\DateTime',
         'collected' => 'float',
         'payment_deduction_type' => 'int',
@@ -86,6 +87,7 @@ class PaymentReceivingDocument implements ModelInterface, ArrayAccess
         'payment_structure_type' => null,
         'document_id' => 'int64',
         'payment_method' => 'int64',
+        'other_channel_id' => 'int64',
         'payment_date' => 'date',
         'collected' => 'decimal',
         'payment_deduction_type' => 'int64',
@@ -133,6 +135,7 @@ class PaymentReceivingDocument implements ModelInterface, ArrayAccess
         'payment_structure_type' => 'paymentStructureType',
         'document_id' => 'documentId',
         'payment_method' => 'paymentMethod',
+        'other_channel_id' => 'otherChannelId',
         'payment_date' => 'paymentDate',
         'collected' => 'collected',
         'payment_deduction_type' => 'paymentDeductionType',
@@ -159,6 +162,7 @@ class PaymentReceivingDocument implements ModelInterface, ArrayAccess
         'payment_structure_type' => 'setPaymentStructureType',
         'document_id' => 'setDocumentId',
         'payment_method' => 'setPaymentMethod',
+        'other_channel_id' => 'setOtherChannelId',
         'payment_date' => 'setPaymentDate',
         'collected' => 'setCollected',
         'payment_deduction_type' => 'setPaymentDeductionType',
@@ -185,6 +189,7 @@ class PaymentReceivingDocument implements ModelInterface, ArrayAccess
         'payment_structure_type' => 'getPaymentStructureType',
         'document_id' => 'getDocumentId',
         'payment_method' => 'getPaymentMethod',
+        'other_channel_id' => 'getOtherChannelId',
         'payment_date' => 'getPaymentDate',
         'collected' => 'getCollected',
         'payment_deduction_type' => 'getPaymentDeductionType',
@@ -265,6 +270,7 @@ class PaymentReceivingDocument implements ModelInterface, ArrayAccess
         $this->container['payment_structure_type'] = isset($data['payment_structure_type']) ? $data['payment_structure_type'] : null;
         $this->container['document_id'] = isset($data['document_id']) ? $data['document_id'] : null;
         $this->container['payment_method'] = isset($data['payment_method']) ? $data['payment_method'] : 1;
+        $this->container['other_channel_id'] = isset($data['other_channel_id']) ? $data['other_channel_id'] : 0;
         $this->container['payment_date'] = isset($data['payment_date']) ? $data['payment_date'] : null;
         $this->container['collected'] = isset($data['collected']) ? $data['collected'] : 0;
         $this->container['payment_deduction_type'] = isset($data['payment_deduction_type']) ? $data['payment_deduction_type'] : 0;
@@ -382,6 +388,12 @@ class PaymentReceivingDocument implements ModelInterface, ArrayAccess
         return $this->container['payment_method'];
     }
 
+    public function getOtherChannelId()
+    {
+        return $this->container['other_channel_id'];
+    }
+    
+
     /**
      * Sets payment_method
      *
@@ -392,6 +404,13 @@ class PaymentReceivingDocument implements ModelInterface, ArrayAccess
     public function setPaymentMethod($payment_method)
     {
         $this->container['payment_method'] = $payment_method;
+
+        return $this;
+    }
+
+    public function setOtherChannelId($other_channel_id)
+    {
+        $this->container['other_channel_id'] = $other_channel_id;
 
         return $this;
     }
@@ -831,5 +850,3 @@ class PaymentReceivingDocument implements ModelInterface, ArrayAccess
         return json_encode(ObjectSerializer::sanitizeForSerialization($this));
     }
 }
-
-
