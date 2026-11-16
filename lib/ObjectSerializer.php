@@ -324,7 +324,11 @@ class ObjectSerializer
             }
             return $data;
         } else {
-            $data = is_string($data) ? json_decode($data) : $data;
+            if (is_string($data)) {
+                $ori_data = $data;
+                $data = json_decode($data);
+            } 
+
             // If a discriminator is defined and points to a valid subclass, use it.
             $discriminator = $class::DISCRIMINATOR;
             if (!empty($discriminator) && isset($data->{$discriminator}) && is_string($data->{$discriminator})) {
@@ -346,6 +350,22 @@ class ObjectSerializer
                     $instance->$propertySetter(self::deserialize($propertyValue, $type, null));
                 }
             }
+            $instance->$propertySetter(self::deserialize($propertyValue, $type, null));
+
+            // Workaround fixes: Due to not able to get json from response.
+            if (empty($instance['status']) && empty($instance['message'])) {
+                preg_match('/\"message" : \"(.*)\",/isU', $ori_data, $matches);
+                if (!empty($matches[1])) {
+                    $instance->setMessage($matches[1]);
+                }
+                preg_match('/\"status\" : (.*),/isU', $ori_data, $matches);
+                if (!empty($matches[1])) {
+                    if ($matches[1] == 'false') {
+                        $instance->setStatus(false);
+                    } 
+                }
+            }
+            
             return $instance;
         }
     }
